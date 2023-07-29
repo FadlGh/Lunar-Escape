@@ -11,11 +11,17 @@ public class Door : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        am.SetBool("Open", true);
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            am.SetBool("Open", true);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        am.SetBool("Open", false);
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            am.SetBool("Open", false);
+        }
     }
 }
