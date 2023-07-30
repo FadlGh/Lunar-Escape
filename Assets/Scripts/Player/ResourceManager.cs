@@ -45,6 +45,10 @@ public class ResourceManager : MonoBehaviour
         {
             Decrease();
         }
+        else if (oxygen < oxygenMax || water < waterMax || food < foodMax)
+        {
+            Increase();
+        }
 
         oxygenSlider.value = oxygen;
         waterSlider.value = water;
@@ -58,5 +62,12 @@ public class ResourceManager : MonoBehaviour
         oxygen -= oxygenDecreaseRate * Time.deltaTime;
         water -= waterDecreaseRate * Time.deltaTime;
         food -= foodDecreaseRate * Time.deltaTime;
+    }
+
+    void Increase()
+    {
+        oxygen += oxygenDecreaseRate * Time.deltaTime;
+        water += waterDecreaseRate * Time.deltaTime;
+        food += foodDecreaseRate * Time.deltaTime;
     }
 }
