@@ -7,12 +7,17 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float speed;
     private float horizontal;
-    private float vertical;
 
     [Header("Jumping")]
     [SerializeField] private float jumpPower;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+
+    [Header("Shooting")]
+    [SerializeField] private GameObject bullet;
+    [SerializeField] private Transform shootPoint;
+    private float timeBetweenCounter;
+    private float timeBetween = 1f;
 
     private Rigidbody2D rb;
     private Animator am;
@@ -28,14 +33,30 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
 
         if (Input.GetButtonDown("Jump") && IsGrounded())
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
         }
 
+
         Flip();
+
+        if (timeBetweenCounter > 0)
+        {
+            timeBetweenCounter -= Time.deltaTime;
+            return;
+        }
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            float bulletRotationZ = isFacingRight ? 0f : 180f;
+            Quaternion bulletRotation = Quaternion.Euler(0f, 0f, bulletRotationZ);
+
+            Instantiate(bullet, shootPoint.position, bulletRotation);
+            timeBetweenCounter = timeBetween;
+            print("sss");
+        }
     }
 
     void FixedUpdate()

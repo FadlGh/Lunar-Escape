@@ -6,11 +6,15 @@ public class PatrolAI : MonoBehaviour
     [SerializeField] private Transform waypoint1;
     [SerializeField] private Transform waypoint2;
     [SerializeField] private float stoppingDistance;
+    [SerializeField] private float waitTime;
 
     private Transform targetWaypoint;
     private Rigidbody2D rb;
+
     private bool isPatrollingForward = true;
     private bool isFacingRight = true;
+    private bool isWaiting = false;
+    private float waitTimer = 0f;
 
     void Start()
     {
@@ -20,6 +24,20 @@ public class PatrolAI : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isWaiting)
+        {
+            waitTimer -= Time.deltaTime;
+
+            if (waitTimer <= 0f)
+            {
+                isWaiting = false;
+            }
+            else
+            {
+                return;
+            }
+        }
+
         Vector2 direction = (targetWaypoint.position - transform.position).normalized;
 
         if (Vector2.Distance(transform.position, targetWaypoint.position) < stoppingDistance)
@@ -34,6 +52,8 @@ public class PatrolAI : MonoBehaviour
             }
 
             isPatrollingForward = !isPatrollingForward;
+            isWaiting = true;
+            waitTimer = waitTime;
             Flip();
         }
         else

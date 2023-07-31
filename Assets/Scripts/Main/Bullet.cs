@@ -16,7 +16,7 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
-        rb.velocity = transform.up * shootSpeed;
+        rb.velocity = transform.right * shootSpeed;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -33,7 +33,7 @@ public class Bullet : MonoBehaviour
 
     void die()
     {
-        Instantiate(ps, transform.position, Quaternion.identity);
+        //Instantiate(ps, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }
