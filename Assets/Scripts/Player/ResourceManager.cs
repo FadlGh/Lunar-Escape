@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ResourceManager : MonoBehaviour
 {
@@ -9,19 +6,16 @@ public class ResourceManager : MonoBehaviour
     [Header("Oxygen")]
     [SerializeField] private float oxygenMax;
     [SerializeField] private float oxygenDecreaseRate;
-    [SerializeField] private Slider oxygenSlider;
 
     [HideInInspector] public float water;
     [Header("Water")]
     [SerializeField] private float waterMax;
     [SerializeField] private float waterDecreaseRate;
-    [SerializeField] private Slider waterSlider;
 
     [HideInInspector] public float food;
     [Header("Food")]
     [SerializeField] private float foodMax;
     [SerializeField] private float foodDecreaseRate;
-    [SerializeField] private Slider foodSlider;
 
     private bool shouldDecrease;
 
@@ -49,12 +43,6 @@ public class ResourceManager : MonoBehaviour
         {
             Increase();
         }
-
-        oxygenSlider.value = oxygen;
-        waterSlider.value = water;
-        foodSlider.value = food;
-
-        print(oxygen);
     }
 
     void Decrease()
