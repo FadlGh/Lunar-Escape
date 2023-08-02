@@ -9481,7 +9481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8715065c21bedf47965fcc4d82e6f07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 50
+  speed: 0
   waypoint1: {fileID: 1307824153}
   waypoint2: {fileID: 1060159366}
   stoppingDistance: 1
@@ -9489,6 +9489,8 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 64
+  bullet: {fileID: 5498908696736809077, guid: e31ae2c786a5f6a4a91bed3fd0dbda7d, type: 3}
+  shootPoint: {fileID: 2008081013}
 --- !u!1 &739590181
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,12 +9,17 @@ public class PatrolAI : MonoBehaviour
     [SerializeField] private float waitTime;
     [SerializeField] private LayerMask playerLayer;
 
+    [Header("Shooting")]
+    [SerializeField] private GameObject bullet;
+    [SerializeField] private Transform shootPoint;
+    private float timeBetweenCounter;
+    private float timeBetween = 1f;
+
     private Transform targetWaypoint;
     private Rigidbody2D rb;
     private Animator am;
 
     private bool isPatrollingForward = true;
-    private bool isFacingRight = true;
     private bool isWaiting = false;
     private float waitTimer = 0f;
 
@@ -27,12 +32,6 @@ public class PatrolAI : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isPatrollingForward ? Physics2D.Raycast(transform.position, Vector2.right, 5f, playerLayer) : Physics2D.Raycast(transform.position, Vector2.left, 5f, playerLayer))
-        {
-            am.SetFloat("Speed", 0f);
-            return;
-        }
-
         if (isWaiting)
         {
             waitTimer -= Time.deltaTime;
@@ -40,6 +39,7 @@ public class PatrolAI : MonoBehaviour
             if (waitTimer <= 0f)
             {
                 isWaiting = false;
+                Flip();
             }
             else
             {
@@ -47,35 +47,53 @@ public class PatrolAI : MonoBehaviour
             }
         }
 
+        bool canSeePlayer = isPatrollingForward ? Physics2D.Raycast(transform.position, Vector2.right, 5f, playerLayer) : Physics2D.Raycast(transform.position, Vector2.left, 5f, playerLayer);
+
         Vector2 direction = (targetWaypoint.position - transform.position).normalized;
 
-        if (Vector2.Distance(transform.position, targetWaypoint.position) < stoppingDistance)
+        if (!canSeePlayer)
         {
-            if (isPatrollingForward)
+            if (Vector2.Distance(transform.position, targetWaypoint.position) < stoppingDistance)
             {
-                targetWaypoint = waypoint2;
+                if (isPatrollingForward)
+                {
+                    targetWaypoint = waypoint2;
+                }
+                else
+                {
+                    targetWaypoint = waypoint1;
+                }
+
+                isPatrollingForward = !isPatrollingForward;
+                isWaiting = true;
+                waitTimer = waitTime;
             }
             else
             {
-                targetWaypoint = waypoint1;
+                rb.velocity = speed * Time.fixedDeltaTime * direction;
             }
-
-            isPatrollingForward = !isPatrollingForward;
-            isWaiting = true;
-            waitTimer = waitTime;
-            Flip();
-        }
-        else
-        {
-            rb.velocity = speed * Time.fixedDeltaTime * direction;
         }
 
         am.SetFloat("Speed", rb.velocity.sqrMagnitude - 0.3f);
+
+        if (timeBetweenCounter > 0)
+        {
+            timeBetweenCounter -= Time.deltaTime;
+            return;
+        }
+
+        if (canSeePlayer)
+        {
+            float bulletRotationZ = isPatrollingForward ? 0f : 180f;
+            Quaternion bulletRotation = Quaternion.Euler(0f, 0f, bulletRotationZ);
+
+            Instantiate(bullet, shootPoint.position, bulletRotation);
+            timeBetweenCounter = timeBetween;
+        }
     }
 
     private void Flip()
     {
-        isFacingRight = !isFacingRight;
         Vector3 localScale = transform.localScale;
         localScale.x *= -1f;
         transform.localScale = localScale;

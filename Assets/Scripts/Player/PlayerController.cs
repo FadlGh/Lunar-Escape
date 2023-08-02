@@ -55,7 +55,6 @@ public class PlayerController : MonoBehaviour
 
             Instantiate(bullet, shootPoint.position, bulletRotation);
             timeBetweenCounter = timeBetween;
-            print("sss");
         }
     }
 
