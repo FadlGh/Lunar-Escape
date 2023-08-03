@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,12 +20,7 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //FindObjectOfType<AudioManager>().Play("explosion");
-        /*if (collision.gameObject.GetComponent<HealthManager>() != null)
-        {
-            collision.gameObject.GetComponent<HealthManager>().ApplyDamage(25f);
-        }*/
-
+        if (collision.gameObject.CompareTag("Alien")) Destroy(collision.gameObject);
 
         die();
     }
