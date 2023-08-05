@@ -1,29 +1,41 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ResourceManager : MonoBehaviour
 {
     [HideInInspector] public float oxygen;
     [Header("Oxygen")]
-    [SerializeField] private float oxygenMax;
     [SerializeField] private float oxygenDecreaseRate;
 
     [HideInInspector] public float water;
     [Header("Water")]
-    [SerializeField] private float waterMax;
     [SerializeField] private float waterDecreaseRate;
 
     [HideInInspector] public float food;
     [Header("Food")]
-    [SerializeField] private float foodMax;
     [SerializeField] private float foodDecreaseRate;
 
     private bool shouldDecrease;
 
+    public static ResourceManager Instance;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
-        oxygen = oxygenMax;
-        water = waterMax;
-        food = foodMax;
+        oxygen = 10f;
+        water = 10f;
+        food = 10f;
     }
 
     void Update()
@@ -39,7 +51,7 @@ public class ResourceManager : MonoBehaviour
         {
             Decrease();
         }
-        else if (oxygen < oxygenMax || water < waterMax || food < foodMax)
+        else if (oxygen < 10f || water < 10f || food < 10f)
         {
             Increase();
         }

@@ -10,7 +10,7 @@ public class BarsManager : MonoBehaviour
     private ResourceManager manager;
     void Start()
     {
-        manager = GameObject.FindGameObjectWithTag("Player").GetComponent<ResourceManager>();
+        manager = ResourceManager.Instance;
     }
 
     void Update()
