@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PatrolAI : MonoBehaviour
@@ -14,6 +15,9 @@ public class PatrolAI : MonoBehaviour
     [SerializeField] private Transform shootPoint;
     private float timeBetweenCounter;
     private float timeBetween = 1f;
+
+    [Header("Die")]
+    [SerializeField] private List<GameObject> items;
 
     private Transform targetWaypoint;
     private Rigidbody2D rb;
@@ -97,5 +101,11 @@ public class PatrolAI : MonoBehaviour
         Vector3 localScale = transform.localScale;
         localScale.x *= -1f;
         transform.localScale = localScale;
+    }
+
+    public void Die()
+    {
+        Instantiate(items[Random.Range(0, items.Count)], transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }
