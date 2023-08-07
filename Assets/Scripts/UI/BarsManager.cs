@@ -6,7 +6,8 @@ public class BarsManager : MonoBehaviour
     [SerializeField] private Slider oxygenSlider;
     [SerializeField] private Slider waterSlider;
     [SerializeField] private Slider foodSlider;
-    
+    [SerializeField] private Slider healthSlider;
+
     private ResourceManager manager;
     void Start()
     {
@@ -18,5 +19,6 @@ public class BarsManager : MonoBehaviour
         oxygenSlider.value = manager.oxygen;
         waterSlider.value = manager.water;
         foodSlider.value = manager.food;
+        healthSlider.value = manager.health;
     }
 }
