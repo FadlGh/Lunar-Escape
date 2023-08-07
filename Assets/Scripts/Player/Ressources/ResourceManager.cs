@@ -98,6 +98,7 @@ public class ResourceManager : MonoBehaviour
         ClampResource(ref oxygen, maxOxygen);
         ClampResource(ref water, maxWater);
         ClampResource(ref food, maxFood);
+        ClampResource(ref health, maxHealth);
     }
 
     private void ClampResource(ref float resource, float maxAmount)
@@ -110,6 +111,7 @@ public class ResourceManager : MonoBehaviour
         ClampResource(ref oxygen, maxOxygen);
         ClampResource(ref water, maxWater);
         ClampResource(ref food, maxFood);
+        ClampResource(ref health, maxHealth);
     }
 
     public void ResetResources()
@@ -143,16 +145,16 @@ public class ResourceManager : MonoBehaviour
         switch (type)
         {
             case ResourceType.Oxygen:
-                oxygen = Mathf.Clamp(oxygen - amount, 0f, 0f);
+                oxygen = Mathf.Clamp(oxygen - amount, 0f, maxOxygen);
                 break;
             case ResourceType.Water:
-                water = Mathf.Clamp(water - amount, 0f, 0f);
+                water = Mathf.Clamp(water - amount, 0f, maxWater);
                 break;
             case ResourceType.Food:
-                food = Mathf.Clamp(food - amount, 0f, 0f);
+                food = Mathf.Clamp(food - amount, 0f, maxFood);
                 break;
             case ResourceType.Health:
-                health = Mathf.Clamp(health - amount, 0f, 0f);
+                health = Mathf.Clamp(health - amount, 0f, maxHealth);
                 break;
         }
     }
