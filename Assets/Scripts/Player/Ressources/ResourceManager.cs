@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public enum ResourceType
 {
@@ -25,6 +26,8 @@ public class ResourceManager : MonoBehaviour
     private bool shouldDecrease;
 
     public static ResourceManager Instance;
+
+    public GameEvent onPlayerDeath;
 
     public float oxygen;
     public float water;
@@ -60,6 +63,16 @@ public class ResourceManager : MonoBehaviour
         else
         {
             IncreaseResources();
+        }
+
+        CheckPlayerDeath();
+    }
+
+    private void CheckPlayerDeath()
+    {
+        if (oxygen <= 0f || water <= 0f || food <= 0f || health <= 1f)
+        {
+            onPlayerDeath.Raise();
         }
     }
 

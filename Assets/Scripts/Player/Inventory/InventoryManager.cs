@@ -77,4 +77,12 @@ public class InventoryManager : MonoBehaviour
 
         return true;
     }
+
+    public void ResetItems()
+    {
+        foreach (var item in inventory)
+        {
+            item.quantity = 0;
+        }
+    }
 }

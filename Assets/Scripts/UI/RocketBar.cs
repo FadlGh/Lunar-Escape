@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,16 +15,23 @@ public class RocketBar : MonoBehaviour
             { "Metal", 2 }
         };
 
+    void Start()
+    {
+        slider.value = GameMaster.Instance.sliderValue;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Upgrade();
         bar.SetBool("Open", true);
     }
+
     private void Upgrade()
     {
         if (InventoryManager.Instance.CheckItemsAvailability(requiredItems))
         {
-            slider.value += 20f;
+            GameMaster.Instance.sliderValue += 20f;
+            slider.value = GameMaster.Instance.sliderValue;
             foreach (var kvp in requiredItems)
             {
                 InventoryManager.Instance.RemoveItem(kvp.Key, kvp.Value);
