@@ -1,15 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movement")]
+    [Header("Move Settings")]
     [SerializeField] private float speed;
-    private float horizontal;
+    [SerializeField] private ParticleSystem dust;
 
-    [Header("Jumping")]
-    [SerializeField] private float jumpPower;
+    [Header("Jump Settings")]
+    [SerializeField] private float jumpingPower;
+    [SerializeField] private float coyoteTime = 0.2f;
+    [SerializeField] private float jumpBufferTime = 0.2f;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
 
@@ -19,10 +19,15 @@ public class PlayerController : MonoBehaviour
     private float timeBetweenCounter;
     private float timeBetween = 1f;
 
-    private Rigidbody2D rb;
-    private Animator am;
+    private float jumpBufferTimeCounter;
+
+    private float coyoteTimeCounter;
 
     private bool isFacingRight = true;
+    private float horizontal;
+
+    private Animator am;
+    private Rigidbody2D rb;
 
     void Start()
     {
@@ -32,33 +37,54 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        horizontal = Input.GetAxis("Horizontal");
+        horizontal = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetButtonDown("Jump") && IsGrounded())
+        if (IsGrounded())
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+            coyoteTimeCounter = coyoteTime;
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
         }
 
-
-        Flip();
-
-        if (timeBetweenCounter > 0)
+        if (Input.GetButtonDown("Jump"))
         {
-            timeBetweenCounter -= Time.deltaTime;
-            return;
+            jumpBufferTimeCounter = jumpBufferTime;
+        }
+        else
+        {
+            jumpBufferTimeCounter -= Time.deltaTime;
+        }
+
+        if (jumpBufferTimeCounter > 0f && coyoteTimeCounter > 0f)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            jumpBufferTimeCounter = 0f;
+            CreateDust();
+        }
+
+        if (rb.velocity.y < 0f)
+        {
+            rb.velocity += 1.5f * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
+        }
+        else if (rb.velocity.y > 0f && !Input.GetButton("Jump"))
+        {
+            rb.velocity += 1f * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
         }
 
         if (Input.GetButtonDown("Fire1"))
         {
             float bulletRotationZ = isFacingRight ? 0f : 180f;
             Quaternion bulletRotation = Quaternion.Euler(0f, 0f, bulletRotationZ);
-
             Instantiate(bullet, shootPoint.position, bulletRotation);
             timeBetweenCounter = timeBetween;
         }
+
+        Flip();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
         am.SetFloat("Speed", Mathf.Abs(horizontal));
@@ -77,6 +103,18 @@ public class PlayerController : MonoBehaviour
             Vector3 localScale = transform.localScale;
             localScale.x *= -1f;
             transform.localScale = localScale;
+            if (IsGrounded()) CreateDust();
         }
+    }
+
+    private void CreateDust()
+    {
+        dust.Play();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(groundCheck.position, 0.02f);
     }
 }
