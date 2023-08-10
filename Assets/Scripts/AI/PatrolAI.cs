@@ -26,6 +26,7 @@ public class PatrolAI : MonoBehaviour
     private bool isPatrollingForward = true;
     private bool isWaiting = false;
     private float waitTimer = 0f;
+    private bool canShoot = true;
 
     void Start()
     {
@@ -90,7 +91,7 @@ public class PatrolAI : MonoBehaviour
         {
             float bulletRotationZ = isPatrollingForward ? 0f : 180f;
             Quaternion bulletRotation = Quaternion.Euler(0f, 0f, bulletRotationZ);
-
+            if (!canShoot) return;
             Instantiate(bullet, shootPoint.position, bulletRotation);
             timeBetweenCounter = timeBetween;
         }
@@ -103,8 +104,13 @@ public class PatrolAI : MonoBehaviour
         transform.localScale = localScale;
     }
 
-    public void Die()
+    public void DisableComponents()
     {
+        canShoot = false;
+    }
+
+    public void Die()
+    { 
         Instantiate(items[Random.Range(0, items.Count)], transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
