@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -99,9 +98,9 @@ public class ResourceManager : MonoBehaviour
 
     private void IncreaseResources()
     {
-        IncreaseResource(ref oxygen, oxygenDecreaseRate);
-        IncreaseResource(ref water, waterDecreaseRate);
-        IncreaseResource(ref food, foodDecreaseRate);
+        IncreaseResource(ref oxygen, oxygenDecreaseRate * 2);
+        IncreaseResource(ref water, waterDecreaseRate * 2);
+        IncreaseResource(ref food, foodDecreaseRate * 2);
         IncreaseResource(ref health, healthDecreaseRate);
 
         ClampResources();
