@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RocketBar : MonoBehaviour
@@ -41,6 +41,14 @@ public class RocketBar : MonoBehaviour
         else
         {
             return;
+        }
+    }
+
+    void Update()
+    {
+        if (slider.value >= 100f)
+        {
+            SceneManager.LoadScene("EndingCutscene");
         }
     }
 
