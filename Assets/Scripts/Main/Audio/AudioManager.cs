@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -30,11 +31,6 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        Play("Background");
-    }
-
     public void Play(string name)
     {
         Sound s = Array.Find(sounds, Sound => Sound.name == name);
@@ -43,5 +39,15 @@ public class AudioManager : MonoBehaviour
             return;
         }
         s.source.Play();
+    }
+
+    public void Pause(string name)
+    {
+        Sound s = Array.Find(sounds, Sound => Sound.name == name);
+        if (s == null)
+        {
+            return;
+        }
+        s.source.Pause();
     }
 }

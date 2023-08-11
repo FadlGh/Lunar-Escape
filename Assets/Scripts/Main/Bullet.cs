@@ -14,7 +14,6 @@ public class Bullet : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         StartCoroutine(DeathTimer());
-        //FindObjectOfType<AudioManager>().Play("fire");
     }
 
     void Update()
@@ -39,7 +38,7 @@ public class Bullet : MonoBehaviour
 
     void die()
     {
-        //Instantiate(ps, transform.position, Quaternion.identity);
+        GameObject.FindGameObjectWithTag("AM").GetComponent<AudioManager>().Play("Hit");
         Destroy(gameObject);
     }
 }

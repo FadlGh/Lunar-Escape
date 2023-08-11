@@ -107,6 +107,7 @@ public class PatrolAI : MonoBehaviour
     public void DisableComponents()
     {
         canShoot = false;
+        GameObject.FindGameObjectWithTag("AM").GetComponent<AudioManager>().Play("Scream");
     }
 
     public void Die()

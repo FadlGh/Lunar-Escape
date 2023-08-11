@@ -12,6 +12,7 @@ public class Item : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             InventoryManager.Instance.AddItem(itemName, amount);
+            GameObject.FindGameObjectWithTag("AM").GetComponent<AudioManager>().Play("Collect");
             Destroy(gameObject);
         }
     }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -33,6 +34,8 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         am = GetComponent<Animator>();
+        GameObject.FindGameObjectWithTag("AM").GetComponent<AudioManager>().Play("Start");
+        GameObject.FindGameObjectWithTag("AM").GetComponent<AudioManager>().Play("Background");
     }
 
     void Update()
@@ -73,7 +76,12 @@ public class PlayerController : MonoBehaviour
             rb.velocity += 1f * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
         }
 
-        if (Input.GetButtonDown("Fire1"))
+        if (timeBetweenCounter > 0f)
+        {
+            timeBetweenCounter -= Time.deltaTime;
+        }
+
+        if (Input.GetButtonDown("Fire1") && timeBetweenCounter <= 0)
         {
             float bulletRotationZ = isFacingRight ? 0f : 180f;
             Quaternion bulletRotation = Quaternion.Euler(0f, 0f, bulletRotationZ);
