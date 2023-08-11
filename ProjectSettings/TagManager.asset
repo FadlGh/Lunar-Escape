@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Base
   - Alien
+  - Volume
   layers:
   - Default
   - TransparentFX

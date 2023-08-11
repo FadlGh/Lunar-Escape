@@ -1,5 +1,7 @@
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public enum ResourceType
 {
@@ -66,6 +68,15 @@ public class ResourceManager : MonoBehaviour
         }
 
         CheckPlayerDeath();
+
+        Volume volume = GameObject.FindGameObjectWithTag("Volume").GetComponent<Volume>();
+        VolumeProfile profile = volume.sharedProfile;
+
+        profile.TryGet<Vignette>(out var vignette);
+        vignette.intensity.value = (10 - Mathf.Min(food, health, water, oxygen)) * 0.5f / 10f;
+
+        profile.TryGet<MotionBlur>(out var motionblur);
+        motionblur.intensity.value = (10 - Mathf.Min(food, health, water, oxygen)) / 10f;
     }
 
     private void CheckPlayerDeath()
